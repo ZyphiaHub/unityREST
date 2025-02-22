@@ -7,7 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["unityREST.csproj", "./"]
-RUN dotnet restore "unityREST/unityREST.csproj"
+RUN dotnet restore "./unityREST.csproj"
 COPY . .
 WORKDIR "/src/unityREST"
 RUN dotnet build "unityREST.csproj" -c Release -o /app/build
