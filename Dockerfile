@@ -1,10 +1,10 @@
 # Alapértelmezett image: .NET SDK (build)
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 
 # Build szakasz
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["unityREST.csproj", "./"]
 RUN dotnet restore "./unityREST.csproj"
