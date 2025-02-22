@@ -5,7 +5,7 @@ EXPOSE 80
 
 # Build szakasz
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
+WORKDIR /src/.
 COPY ["unityREST.csproj", "./"]
 RUN dotnet restore "./unityREST.csproj"
 COPY . .
