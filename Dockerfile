@@ -1,22 +1,14 @@
-# Alapértelmezett image: .NET SDK (build)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
 
-# Build szakasz
+
+
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src/.
-COPY ["unityREST.csproj", "./"]
-RUN dotnet restore "./unityREST.csproj"
+WORKDIR /src
 COPY . .
-WORKDIR "/src/unityREST"
-RUN dotnet build "unityREST.csproj" -c Release -o /app/build
+RUN dotnet publish -c Release -o /app
 
-FROM build AS publish
-RUN dotnet publish "unityREST.csproj" -c Release -o /app/publish
-
-# Futtatási szakasz
-FROM base AS final
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app .
 ENTRYPOINT ["dotnet", "unityREST.dll"]
