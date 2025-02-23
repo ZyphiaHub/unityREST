@@ -39,4 +39,6 @@ public class PlayerData {
     public int Id { get; set; }
     public string Name { get; set; }
     public int Score { get; set; }
+    public int IslandId { get; set; } // Új mező
+    public int CharacterId { get; set; } // Új mező
 }

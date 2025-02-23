@@ -32,6 +32,45 @@ public class PlayersController : ControllerBase {
         return player;
     }
 
+    // 🔹 Játékos adatainak frissítése (PUT /api/players/1)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdatePlayer(int id, PlayerData updatedPlayer)
+    {
+        if (id != updatedPlayer.Id)
+        {
+            return BadRequest("ID mismatch");
+        }
+
+        var player = await _context.Players.FindAsync(id);
+        if (player == null)
+        {
+            return NotFound();
+        }
+
+        // Frissítsd a játékos adatait
+        player.Name = updatedPlayer.Name;
+        player.Score = updatedPlayer.Score;
+        player.IslandId = updatedPlayer.IslandId;
+        player.CharacterId = updatedPlayer.CharacterId;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.Players.Any(p => p.Id == id))
+            {
+                return NotFound();
+            } else
+            {
+                throw;
+            }
+        }
+
+        return NoContent();
+    }
+
     // 🔹 Új játékos létrehozása (POST /api/players)
     [HttpPost]
     public async Task<ActionResult<PlayerData>> PostPlayer(PlayerData player)
